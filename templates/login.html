@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Авторизация | FlowPay</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body class="login-body">
+    <div class="login-card">
+        <div class="logo"><p>FlowPay</p></div>
+        <p class="login-subtitle">Войдите, чтобы продолжить работу</p>
+        
+        {% if error %}
+            <div class="error-badge">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST">
+            <div class="input-group">
+                <input type="email" name="email" placeholder="E-mail адрес" required>
+            </div>
+            <div class="input-group">
+                <input type="password" name="password" placeholder="Пароль" required>
+            </div>
+            <button type="submit" class="login-button">АВТОРИЗОВАТЬСЯ</button>
+        </form>
+        
+        <div class="login-footer">
+            <p>
+                © 2025 FLOW PAY System
+            </p>
+        </div>
+    </div>
+
+    <a href="https://t.me/n77nkaz" target="_blank" class="floating-tg">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Support">
+    </a>
+</body>
+</html>

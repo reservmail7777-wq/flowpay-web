@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Карты и кошельки | FlowPay</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
+
+    <div class="mobile-nav">
+        <div class="logo">FlowPay</div>
+        <button class="burger-menu" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+
+    <div class="dashboard-wrapper">
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">FlowPay</div>
+            <nav class="menu">
+                <a href="{{ url_for('dashboard') }}" class="menu-item {{ 'active' if request.endpoint == 'dashboard' else '' }}">Главная</a>
+                <a href="{{ url_for('wallets') }}" class="menu-item {{ 'active' if request.endpoint == 'wallets' else '' }}">Карты и кошельки</a>
+                <a href="{{ url_for('settings') }}" class="menu-item {{ 'active' if request.endpoint == 'settings' else '' }}">Настройки</a>
+                <a href="{{ url_for('sales') }}" class="menu-item {{ 'active' if request.endpoint == 'sales' else '' }}">Продажи</a>
+                <a href="{{ url_for('buy') }}" class="menu-item {{ 'active' if request.endpoint == 'buy' else '' }}">Купля</a>
+                <a href="{{ url_for('balance') }}" class="menu-item {{ 'active' if request.endpoint == 'balance' else '' }}">Баланс</a>
+                <a href="{{ url_for('history') }}" class="menu-item {{ 'active' if request.endpoint == 'history' else '' }}">История переписки</a>
+                <a href="{{ url_for('disputes') }}" class="menu-item {{ 'active' if request.endpoint == 'disputes' else '' }}">Диспуты</a>
+                <a href="{{ url_for('logout') }}" class="menu-item logout-link">Выйти</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-spacer"></div>
+                <div class="header-info">
+                    <div class="user-badge">Баланс: <strong>0.00 USDT</strong></div>
+                    <span class="user-email">{{ user.email }}</span>
+                </div>
+            </header>
+
+            <div class="wallet-header">
+                <button class="add-btn" onclick="openModal()">+ ДОБАВИТЬ НОВУЮ КАРТУ</button>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Всего 0 шт</th>
+                            <th>Активных 0 шт</th>
+                            <th>Банк</th>
+                            <th>Имя</th>
+                            <th>Номер карты</th>
+                            <th>Телефон</th>
+                            <th>Пробег</th>
+                            <th>Действие</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <div id="walletModal" class="modal-overlay">
+        <div class="modal-window">
+            <div class="modal-header">
+                <h3>Реквизиты для оплаты</h3>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            
+            <form class="modal-body">
+                <div class="form-grid">
+                    <div class="input-field full">
+                        <label>Имя в системе</label>
+                        <input type="text" placeholder="Введите название">
+                    </div>
+                    <div class="input-field full">
+                        <label>Имя владельца</label>
+                        <input type="text" placeholder="Имя Фамилия">
+                    </div>
+                    
+                    <div class="input-field">
+                        <label>Банк</label>
+                        <select name="bank_name">
+                            <option value="" disabled selected>Выберите банк</option>
+                            <option value="monobank">Monobank</option>
+                            <option value="privat24">Приват24</option>
+                            <option value="pumb">ПУМБ Online</option>
+                            <option value="sense">Sense Bank</option>
+                            <option value="a-bank">А-Банк (Abank24)</option>
+                            <option value="raiffeisen">Райффайзен (Raiffeisen Online)</option>
+                            <option value="oschad">Ощадбанк (Мобільний Ощад)</option>
+                            <option value="ukrsib">Укрсиббанк (UKRSIBBANK ON)</option>
+                            <option value="otp">OTP Bank (OTP Smart)</option>
+                            <option value="universal">Universal Bank</option>
+                            <option value="ukrgas">Укргазбанк (Экобанк)</option>
+                            <option value="izibank">izibank</option>
+                            <option value="globus">Глобус Банк</option>
+                            <option value="ukrssib">Укрексімбанк (Enter EXIM)</option>
+                            <option value="pivdenny">Банк Південний</option>
+                            <option value="kredo">Кредобанк (KredoBank)</option>
+                            <option value="ideabank">Idea Bank (O.Bank)</option>
+                            <option value="tas">ТАСКОМБАНК (TAS2U)</option>
+                            <option value="vostok">Банк Восток</option>
+                            <option value="alliance">Альянс Банк (Alliance App)</option>
+                            <option value="mtb">МТБ Банк</option>
+                            <option value="pravex">Правекс Банк</option>
+                            <option value="clir">Clear Junction (для SEPA/SWIFT)</option>
+                            <option value="other">Другой (ввод вручную)</option>
+                        </select>
+                    </div>
+
+                    <div class="input-field">
+                        <label>Номер карты</label>
+                        <input type="text" placeholder="0000 0000 0000 0000">
+                    </div>
+
+                    <div class="input-field full">
+                        <label>Срок</label>
+                        <input type="text" placeholder="ММ/ГГ">
+                    </div>
+                </div>
+
+                <div class="checkbox-row">
+                    <input type="checkbox" id="iban-check">
+                    <label for="iban-check">Оплата принимается на реквизиты счета</label>
+                </div>
+
+                <div class="form-grid">
+                    <div class="input-field full">
+                        <label>IBAN</label>
+                        <input type="text" placeholder="UA...">
+                    </div>
+                    <div class="input-field full">
+                        <label>Номер телефона</label>
+                        <input type="text" placeholder="+380...">
+                    </div>
+                    <div class="input-field small">
+                        <label>Лимит в день</label>
+                        <input type="number" placeholder="0">
+                    </div>
+                    <div class="input-field small">
+                        <label>MIN ордер</label>
+                        <input type="number" placeholder="0">
+                    </div>
+                    <div class="input-field small">
+                        <label>MAX ордер</label>
+                        <input type="number" placeholder="0">
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-save" onclick="saveWallet()">СОХРАНИТЬ</button>
+                    <button type="button" class="btn-cancel" onclick="closeModal()">ОТМЕНА</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Управление модальным окном
+        function openModal() { document.getElementById('walletModal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('walletModal').style.display = 'none'; }
+
+        // Управление мобильным меню
+        function toggleMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('menuOverlay');
+            
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+            
+            if (sidebar.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = 'auto';
+            }
+        }
+    </script>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

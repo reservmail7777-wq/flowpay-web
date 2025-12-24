@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Настройки | FlowPay{% endblock %}
+
+{% block content %}
+<div class="wallet-header">
+    <h2 style="margin-bottom: 25px;">Настройки системы</h2>
+</div>
+
+<div class="settings-container" style="max-width: 800px;">
+    <form action="{{ url_for('settings') }}" method="POST">
+        
+        <div class="card" style="margin-bottom: 20px; background: var(--bg-card); padding: 25px; border-radius: 15px; border: 1px solid var(--border);">
+            <h3 style="margin-bottom: 20px; font-size: 18px;">Базовые валюты</h3>
+            <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="input-field">
+                    <label style="display: block; margin-bottom: 8px; color: var(--text-secondary); font-size: 14px;">Входящие (PayIn)</label>
+                    <select name="base_currency_in" style="width: 100%; background: var(--bg-main); color: white; border: 1px solid var(--border); padding: 12px; border-radius: 10px; cursor: pointer; outline: none;">
+                        {% for curr in ['UAH', 'RUB', 'KGS', 'TJS', 'KZT', 'AED'] %}
+                        <option value="{{ curr }}" {% if user.currency_in == curr %}selected{% endif %}>{{ curr }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="input-field">
+                    <label style="display: block; margin-bottom: 8px; color: var(--text-secondary); font-size: 14px;">Исходящие (PayOut)</label>
+                    <select name="base_currency_out" style="width: 100%; background: var(--bg-main); color: white; border: 1px solid var(--border); padding: 12px; border-radius: 10px; cursor: pointer; outline: none;">
+                        {% for curr in ['UAH', 'RUB', 'KGS', 'TJS', 'KZT', 'AED'] %}
+                        <option value="{{ curr }}" {% if user.currency_out == curr %}selected{% endif %}>{{ curr }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-bottom: 30px; background: var(--bg-card); padding: 25px; border-radius: 15px; border: 1px solid var(--border);">
+            <h3 style="margin-bottom: 20px; font-size: 18px;">Комиссии (Просмотр)</h3>
+            <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="input-field">
+                    <label style="display: block; margin-bottom: 8px; color: var(--text-secondary); font-size: 14px;">Входящий фиат</label>
+                    <input type="text" value="{{ commissions.in if commissions else '0%' }}" readonly 
+                           style="width: 100%; background: var(--bg-main); color: var(--text-secondary); border: 1px solid var(--border); padding: 12px; border-radius: 10px; opacity: 0.6; cursor: not-allowed;">
+                </div>
+                <div class="input-field">
+                    <label style="display: block; margin-bottom: 8px; color: var(--text-secondary); font-size: 14px;">Исходящий фиат</label>
+                    <input type="text" value="{{ commissions.out if commissions else '0%' }}" readonly 
+                           style="width: 100%; background: var(--bg-main); color: var(--text-secondary); border: 1px solid var(--border); padding: 12px; border-radius: 10px; opacity: 0.6; cursor: not-allowed;">
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn-save" style="width: 220px; background: var(--accent); color: black; border: none; padding: 15px; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.3s;">
+            СОХРАНИТЬ ИЗМЕНЕНИЯ
+        </button>
+    </form>
+</div>
+
+<style>
+    /* Адаптивность для мобильных устройств */
+    @media (max-width: 600px) {
+        .form-grid {
+            grid-template-columns: 1fr !important;
+        }
+        .btn-save {
+            width: 100% !important;
+        }
+    }
+    .btn-save:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}История переписки | FlowPay{% endblock %}
+
+{% block content %}
+<div class="history-container" style="max-width: 1000px;">
+    <h2 style="margin-bottom: 10px;">Архив деловой переписки</h2>
+    <p style="color: var(--text-secondary); margin-bottom: 20px;">Для фильтрации по статусу используйте их код:</p>
+
+    <ul style="list-style: none; padding: 0; margin-bottom: 30px; font-size: 14px; line-height: 1.8; color: var(--text-primary);">
+        <li>• <strong style="color: var(--accent);">0</strong> — New order</li>
+        <li>• <strong style="color: var(--accent);">1</strong> — Запрос был выполнен</li>
+        <li>• <strong style="color: var(--accent);">2</strong> — По поводу просьбы возник спор</li>
+        <li>• <strong style="color: var(--accent);">3</strong> — Аннулировано в связи с истечением срока действия</li>
+    </ul>
+
+    <div class="sales-table-container">
+        <table class="sales-table">
+            <thead>
+                <tr>
+                    <th style="width: 80px;">ID</th>
+                    <th>Дата и время</th>
+                    <th>Статус</th>
+                    <th>Сумма</th>
+                    <th>Сообщение</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background: rgba(255,255,255,0.02);">
+                    <td colspan="5" style="text-align: center; padding: 15px; color: var(--text-secondary); font-size: 13px;">
+                        Сообщений не найдено
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5" style="text-align: center; border-bottom: none; padding-top: 20px;">
+                        <span style="background: var(--accent); color: #000; padding: 5px 12px; border-radius: 50%; font-weight: bold; font-size: 15px;">1</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    /* Планшетная адаптация для таблицы истории */
+    @media (max-width: 768px) {
+        .history-container h2 {
+            font-size: 18px;
+        }
+        .sales-table th, .sales-table td {
+            font-size: 12px;
+            padding: 10px 5px;
+        }
+    }
+</style>
+{% endblock %}

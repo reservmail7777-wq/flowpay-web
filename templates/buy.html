@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Купля | FlowPay{% endblock %}
+
+{% block content %}
+    <div class="sales-controls" style="margin-bottom: 30px;">
+        <div class="input-field" style="max-width: 220px;">
+            <label style="display: block; margin-bottom: 8px; color: var(--text-secondary);">Дата для таблицы</label>
+            <input type="date" value="2025-12-24" style="width: 100%; background: var(--bg-card); border: 1px solid var(--border); color: white; padding: 10px; border-radius: 8px; color-scheme: dark;">
+        </div>
+    </div>
+
+    <div class="status-tabs" style="display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 10px;">
+        <button class="tab-btn active">ВСЕ</button>
+        <button class="tab-btn">НОВЫЕ ЗАЯВКИ</button>
+        <button class="tab-btn">ОЖИДАЮТ ПРОВЕРКИ</button>
+        <button class="tab-btn">ЗАВЕРШЕННЫЕ</button>
+        <button class="tab-btn">СПОР</button>
+        <button class="tab-btn">ОТМЕНЕННЫЕ</button>
+    </div>
+
+    <div class="sales-table-container">
+        <table class="sales-table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Детали</th>
+                    <th>Статус</th>
+                    <th>Сумма</th>
+                    <th>Валюта</th>
+                    <th>Курс/Мой курс</th>
+                    <th>Бонус</th>
+                    <th>Сделка %</th>
+                    <th>Действие</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="9">
+                        <div class="no-data-box" style="text-align: center; padding: 60px 20px; color: var(--text-secondary); opacity: 0.6;">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom: 15px;">
+                                <path d="M20 12l-8 8-8-8M12 4v16" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <p style="font-size: 16px;">Нет данных для отображения</p>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.querySelectorAll('.tab-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const activeTab = document.querySelector('.tab-btn.active');
+                if (activeTab) activeTab.classList.remove('active');
+                button.classList.add('active');
+            });
+        });
+    </script>
+
+    <style>
+        /* Стили для табов, если их нет в основном CSS */
+        .tab-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: 0.3s;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .tab-btn.active {
+            background: var(--accent);
+            color: black;
+            border-color: var(--accent);
+        }
+        .tab-btn:hover:not(.active) {
+            background: rgba(255,255,255,0.1);
+        }
+    </style>
+{% endblock %}

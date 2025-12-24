@@ -1,0 +1,1057 @@
+/* --- ОСНОВНЫЕ ПЕРЕМЕННЫЕ --- */
+:root {
+    --bg-main: #0b0e14;
+    --bg-card: #151921;
+    --bg-sidebar: #11141d;
+    --accent: #00d4ff;
+    --accent-gradient: linear-gradient(90deg, #00d4ff, #8000ff);
+    --text-primary: #ffffff;
+    --text-secondary: #94a3b8;
+    --border: rgba(255, 255, 255, 0.05);
+}
+
+/* --- СБРОС СТИЛЕЙ --- */
+* { box-sizing: border-box; margin: 0; padding: 0; transition: all 0.2s ease; }
+body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg-main); color: var(--text-primary); line-height: 1.5; overflow-x: hidden; }
+
+/* --- СТРАНИЦА ЛОГИНА --- */
+/* Центрирование всей страницы логина */
+.login-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #0b0e14; /* Убедитесь, что фон темный */
+}
+
+/* Карточка логина */
+.logo p{
+    font-size: 45px;
+    font-weight: 800;
+    color: var(--accent);
+    text-align: center;
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+}
+
+.login-card {
+    background: #151921;
+    padding: 50px 40px;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    width: 100%;
+    max-width: 400px; /* Фиксированная ширина */
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* Поля ввода */
+.input-group {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 14px 18px;
+    background: #0b0e14;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: white;
+    font-size: 15px;
+    outline: none;
+    box-sizing: border-box; /* Чтобы padding не раздувал поле */
+}
+
+/* Кнопка */
+.login-button {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(90deg, #00d4ff, #8000ff);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.login-subtitle {
+    margin-bottom: 10px;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.login-footer p {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 50px;
+}
+
+.error-badge {
+    background: #ff4d4f;
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 13px;
+}
+
+/* --- УЛУЧШЕННЫЙ БЛОК ФОРМУЛЫ --- */
+.formula-block {
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* Расстояние между текстом и формулой */
+    margin: 20px 0;
+}
+
+.formula-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--text-secondary); /* Неяркий цвет, чтобы не отвлекать */
+    font-weight: 600;
+}
+
+.formula-container {
+    display: inline-block;
+    align-self: flex-start; /* Чтобы рамка не растягивалась на всю ширину */
+    background: rgba(255, 255, 255, 0.03);
+    padding: 14px 22px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.formula-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    color: #e0e6ed; /* Тот самый единый цвет */
+    letter-spacing: 0.5px;
+}
+
+/* Эффект при наведении на весь блок */
+.formula-block:hover .formula-label {
+    color: var(--accent); /* Подсвечиваем заголовок */
+}
+
+.formula-block:hover .formula-container {
+    border-color: rgba(0, 212, 255, 0.3);
+    background: rgba(0, 212, 255, 0.05);
+}
+
+.formula-details {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-bottom: 25px;
+}
+
+.detail-item {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    padding-left: 15px;
+    border-left: 2px solid var(--border);
+    transition: border-color 0.3s;
+}
+
+.detail-item:hover {
+    border-left-color: var(--accent);
+    color: var(--text-primary);
+}
+
+.detail-item strong {
+    color: var(--accent);
+    font-weight: 600;
+    margin-right: 4px;
+}
+
+.formula-footer {
+    font-size: 12px;
+    color: #ff4d4f; /* Цвет ошибки/предупреждения */
+    font-style: italic;
+    opacity: 0.9;
+    padding-top: 15px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.formula-footer::before {
+    content: '⚠️';
+    font-style: normal;
+}
+
+/* --- WALLETS --- */
+
+/* Таблица */
+.table-container {
+    background: var(--bg-card);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+th {
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--text-secondary);
+    text-align: left;
+    padding: 15px;
+    font-weight: 500;
+    border-bottom: 1px solid var(--border);
+}
+
+td { padding: 15px; color: var(--text-primary); border-bottom: 1px solid var(--border); }
+
+/* Кнопка добавления */
+.add-btn {
+    background: #4e46e5; /* Фиолетовый как на скрине */
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.add-btn:hover { background: #6366f1; transform: translateY(-2px); }
+
+/* Модальное окно */
+/* Фоновая подложка (затемнение) */
+.modal-overlay {
+    display: none; /* Скрыто по умолчанию */
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(5px);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Окно */
+.modal-window {
+    background: var(--bg-card);
+    width: 100%;
+    max-width: 550px;
+    max-height: 90vh;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+    padding: 20px 25px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 { font-size: 16px; color: var(--text-primary); }
+
+.close-btn {
+    background: none; border: none; color: var(--text-secondary);
+    font-size: 24px; cursor: pointer;
+}
+
+/* Тело формы */
+.modal-body {
+    padding: 25px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 15px;
+}
+
+.input-field { grid-column: span 3; } /* Половина ширины */
+.input-field.full { grid-column: span 6; } /* Вся ширина */
+.input-field.small { grid-column: span 2; } /* Треть ширины */
+
+.input-field label {
+    display: block;
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+}
+
+/* Базовые стили для всех полей ввода */
+.input-field input, 
+.input-field select {
+    width: 100% !important;  /* Принудительно на всю ширину контейнера */
+    height: 48px;            /* Одинаковая высота для всех */
+    background: #0b0e14;     /* Темный фон как в логине */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0 15px;
+    border-radius: 12px;
+    color: white;
+    font-size: 15px;
+    outline: none;
+    box-sizing: border-box;  /* Чтобы padding не раздувал поле */
+    display: block;
+}
+
+/* Специфические правки для select, чтобы убрать системную "маленькую кнопку" */
+select {
+    cursor: pointer;
+    appearance: none;        /* Убираем стандартный вид браузера */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 14px;
+}
+
+/* Эффект при наведении и фокусе */
+.input-field input:focus, 
+.input-field select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 8px rgba(0, 212, 255, 0.2);
+}
+
+/* Убеждаемся, что сетка не зажимает элементы */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 20px;               /* Увеличили расстояние для чистоты */
+    width: 100%;
+}
+
+/* Чекбокс */
+.checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+/* Футер с кнопками */
+.modal-footer {
+    padding: 20px 25px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    border-top: 1px solid var(--border);
+}
+
+.btn-save {
+    background: var(--accent-gradient);
+    border: none; padding: 14px; border-radius: 10px;
+    color: white; font-weight: 700; cursor: pointer;
+}
+
+.btn-cancel {
+    background: #ff4d4f20;
+    border: 1px solid #ff4d4f40;
+    padding: 14px; border-radius: 10px;
+    color: #ff4d4f; font-weight: 700; cursor: pointer;
+}
+
+/* --- DASHBOARD WRAPPER --- */
+.dashboard-wrapper { display: flex; min-height: 100vh; }
+
+/* --- SIDEBAR --- */
+.sidebar { width: 260px; background: var(--bg-sidebar); border-right: 1px solid var(--border); display: flex; flex-direction: column; }
+.logo { padding: 30px; font-size: 24px; font-weight: 800; color: var(--accent); letter-spacing: 2px; text-align: center; text-shadow: 0 0 10px rgba(0, 212, 255, 0.3); }
+
+.menu {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 20px; /* Отступ от самого низа экрана */
+}
+.menu-item { display: flex; align-items: center; padding: 14px 25px; color: var(--text-secondary); text-decoration: none; font-size: 14px; border-left: 3px solid transparent; }
+.menu-item:hover { background: rgba(255,255,255,0.02); color: white; }
+.menu-item.active { background: rgba(0, 212, 255, 0.05); color: var(--accent); border-left-color: var(--accent); }
+
+/* Стили для кнопки Выйти */
+.menu-item.logout-link {
+    margin-top: auto;          /* Выталкивает кнопку в самый низ */
+    color: #ff4d4f;            /* Насыщенный красный цвет */
+    font-weight: 700;
+    border-left: 3px solid transparent; /* Убираем синюю полоску по умолчанию */
+}
+
+/* Эффект при наведении на Выйти */
+.menu-item.logout-link:hover {
+    background: rgba(255, 77, 79, 0.1); /* Легкий красный фон при наведении */
+    color: #ff7875;
+    border-left-color: #ff4d4f;        /* Красная полоска слева при наведении */
+}
+
+/* --- ОСНОВНОЙ КОНТЕНТ --- */
+.main-content { flex: 1; padding: 40px; overflow-y: auto; }
+.top-header { display: flex; justify-content: flex-end; align-items: center; margin-bottom: 30px; gap: 20px; font-size: 14px; }
+.user-badge { background: var(--bg-card); padding: 8px 16px; border-radius: 20px; border: 1px solid var(--border); color: var(--text-secondary); }
+
+.formula-box { 
+    background: rgba(0, 212, 255, 0.03); border: 1px solid rgba(0, 212, 255, 0.1); 
+    padding: 25px; border-radius: 16px; margin-bottom: 30px; font-size: 13px; color: var(--text-secondary); 
+}
+.formula-box strong { color: var(--accent); }
+
+/* --- КАРТОЧКИ --- */
+.content-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 30px; }
+.card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+.card h3 { font-size: 14px; color: var(--text-secondary); margin-bottom: 20px; font-weight: 500; }
+
+.main-value { 
+    font-size: 42px; font-weight: 800; margin: 25px 0; 
+    background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+}
+
+.sub-stats { border-top: 1px solid var(--border); padding-top: 20px; font-size: 13px; color: var(--text-secondary); }
+.sub-stats strong { color: white; }
+
+/* --- SETTINGS --- */
+
+.settings-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 800px; /* Чтобы настройки не растягивались слишком сильно */
+}
+
+.settings-container .card {
+    padding: 25px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+}
+
+.settings-container h3 {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* --- СТИЛИ ДЛЯ СТРАНИЦЫ ПРОДАЖ --- */
+
+/* Контейнер фильтров даты */
+.sales-header {
+    display: flex;
+    align-items: flex-end;
+    gap: 30px;
+}
+
+/* Стили вкладок статусов (Tabs) */
+.status-tabs {
+    display: flex;
+    gap: 5px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 25px;
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    padding: 12px 15px;
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.tab-btn:hover {
+    color: var(--text-primary);
+}
+
+.tab-btn.active {
+    color: var(--accent);
+}
+
+/* Синяя полоска под активной вкладкой */
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--accent);
+}
+
+/* Стили таблицы из скриншота */
+/* Стили для элементов управления над таблицей */
+.sales-controls .input-field input {
+    background: var(--bg-card) !important; /* Темный фон вместо белого */
+    color: white !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 12px;
+    padding: 10px 15px;
+}
+
+/* Стилизация чекбокса и текста рядом */
+.sales-controls span {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+/* Настройка белой таблицы */
+/* --- ТЕМНАЯ ТЕМАТИКА ДЛЯ ПРОДАЖ --- */
+
+/* Контейнер таблицы теперь темный */
+.sales-table-container {
+    background: var(--bg-card) !important; 
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    overflow: hidden;
+    margin-top: 15px;
+}
+
+.sales-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: transparent; /* Убираем белый фон */
+}
+
+/* Заголовки таблицы */
+.sales-table th {
+    background: rgba(255, 255, 255, 0.02); /* Почти прозрачный серый */
+    color: var(--text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    text-align: left;
+    padding: 18px 15px;
+    border-bottom: 1px solid var(--border);
+    font-weight: 600;
+}
+
+/* Ячейки таблицы */
+.sales-table td {
+    padding: 18px 15px;
+    color: var(--text-primary); /* Белый текст */
+    font-size: 14px;
+    border-bottom: 1px solid var(--border);
+}
+
+/* Исправляем поле даты, чтобы оно не было белым */
+.sales-controls input[type="date"] {
+    background: var(--bg-card) !important;
+    color: white !important;
+    border: 1px solid var(--border) !important;
+    padding: 10px;
+    border-radius: 10px;
+    color-scheme: dark; /* Делает иконку календаря светлой */
+}
+
+/* Пустое состояние (No Data) */
+.no-data-box {
+    text-align: center;
+    padding: 100px 0;
+    color: var(--text-secondary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.no-data-box svg {
+    stroke: var(--text-secondary);
+    opacity: 0.3;
+}
+
+/* Состояние "No Data" */
+.no-data-box {
+    text-align: center;
+    padding: 80px 0;
+    color: #94a3b8;
+}
+
+.no-data-box svg {
+    margin-bottom: 10px;
+    opacity: 0.5;
+}
+
+/* Кастомизация чекбокса (В ходе выполнения) */
+input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--accent);
+}
+
+/* Общие стили для темных таблиц в разделах Продажи и Купля */
+.sales-table-container {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.sales-table th {
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border);
+}
+
+.sales-table td {
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border);
+}
+
+/* Специфический стиль для даты в темной теме */
+input[type="date"] {
+    color-scheme: dark;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+
+.btn-deposit {
+    background: #28a745 !important;
+    color: white;
+    font-weight: bold;
+    border: none;
+    padding: 14px 25px;
+    border-radius: 10px;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 13px;
+    transition: background 0.3s ease;
+}
+
+.btn-deposit:hover {
+    background: #218838 !important;
+}
+
+/* Стили для кода кошелька */
+/* Контейнер для адреса */
+.wallet-address-container {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    padding: 15px 20px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 550px;
+}
+
+/* Настройка самого шрифта адреса */
+.wallet-address {
+    font-family: 'SF Mono', 'Roboto Mono', 'Cascadia Code', 'Courier New', monospace;
+    color: #fff;
+    font-size: 17px;
+    letter-spacing: 0.5px;
+    word-break: break-all;
+}
+
+/* Контейнер в одну строку */
+.wallet-row {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 5px 15px;
+    max-width: 600px;
+}
+
+/* Поле с адресом (выглядит как текст) */
+#walletAddr {
+    flex: 1;
+    background: transparent !important;
+    border: none !important;
+    color: #fff;
+    font-family: inherit; /* Обычный шрифт как у всего сайта */
+    font-size: 15px;
+    padding: 10px 0;
+    outline: none;
+    cursor: default;
+}
+
+/* Кнопка копирования */
+.copy-btn {
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 6px 15px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-left: 10px;
+    text-transform: uppercase;
+    transition: all 0.2s;
+}
+
+.copy-btn:hover {
+    background: rgba(0, 212, 255, 0.1);
+}
+
+/* Фоновая подложка */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1000; 
+    left: 0; top: 0; width: 100%; height: 100%; 
+    background-color: rgba(0,0,0,0.8);
+    align-items: center; justify-content: center;
+}
+
+/* Контент окна */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0; top: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: var(--bg-card);
+    padding: 30px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    width: 350px;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+/* Кнопка депозита */
+.btn-deposit {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.btn-confirm {
+    flex: 1;
+    background: #28a745;
+    color: white; border: none; padding: 12px;
+    border-radius: 10px; font-weight: bold; cursor: pointer;
+}
+
+.btn-cancel {
+    flex: 1;
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+    padding: 12px;
+    border-radius: 10px; cursor: pointer;
+}
+
+.btn-confirm:hover { background: #218838; }
+.btn-cancel:hover { background: rgba(255,255,255,0.05); }
+
+.history-container ul li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 5px;
+}
+
+/* Настройка шрифта и стиля даты для диспутов */
+.dispute-date {
+    background: var(--bg-card) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 10px;
+    padding: 12px 15px;
+    width: 100%;
+    font-family: inherit; /* Использует основной шрифт сайта */
+    font-size: 15px;
+    outline: none;
+    color-scheme: dark; /* Делает иконку календаря светлой */
+    transition: border-color 0.3s ease;
+}
+
+.dispute-date:focus {
+    border-color: var(--accent) !important;
+}
+
+/* Стилизация текста сообщения под датой */
+.info-message p {
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--text-secondary);
+    letter-spacing: 0.2px;
+}
+
+/* --- ПЛАВАЮЩАЯ КНОПКА TELEGRAM --- */
+.floating-tg {
+    position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px;
+    background-color: #24A1DE; border-radius: 50%; display: flex;
+    justify-content: center; align-items: center; z-index: 9999;
+    box-shadow: 0 4px 20px rgba(0, 212, 255, 0.4);
+    animation: pulse-tg 2s infinite;
+}
+
+.floating-tg img { width: 32px; height: 32px; }
+.floating-tg:hover { transform: scale(1.1) rotate(10deg); box-shadow: 0 0 30px rgba(0, 212, 255, 0.7); }
+
+.dashboard-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Планшеты и телефоны */
+
+.logo {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+/* Меню делаем в ряд со скроллом, чтобы не занимало пол-экрана */
+.menu {
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+    padding-bottom: 10px;
+}
+
+.menu-item {
+    white-space: nowrap; /* Чтобы текст не переносился */
+    padding: 8px 15px;
+}
+
+.top-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Выравнивание вправо на ПК */
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.header-spacer {
+    flex-grow: 1; /* Занимает всё пустое пространство слева */
+}
+
+.header-info {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Фиксированный отступ между балансом и почтой */
+}
+
+.user-badge {
+    background: var(--bg-card);
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    white-space: nowrap; /* Запрещает перенос баланса на новую строку */
+    display: flex;
+    align-items: center;
+}
+
+.user-email {
+    color: var(--text-secondary);
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+/* --- ИСПРАВЛЕНИЕ ДЛЯ МОБИЛЬНЫХ --- */
+@media (max-width: 768px) {
+    .top-header {
+        /* На мобильных скрываем десктопный хедер, если баланс есть в mobile-nav */
+        /* Либо оставляем, но уменьшаем отступы */
+        margin-bottom: 20px;
+    }
+    .user-email { display: none; } /* Оставляем на мобилках только баланс */
+    .top-header { margin-bottom: 15px; }
+    
+    .header-info {
+        gap: 10px;
+    }
+
+    .user-email {
+        font-size: 12px;
+    }
+}
+
+    /* Таблицы — это самая большая проблема. Делаем им горизонтальный скролл */
+    .sales-table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .sales-table {
+        min-width: 600px; /* Чтобы колонки не сжимались в кашу */
+    }
+
+    /* Инфо-карточки и модалки */
+    .balance-info-card, .modal-content {
+        width: 100%;
+        padding: 15px;
+    }
+
+    .wallet-row {
+        flex-direction: column; /* Адрес и кнопка копирования друг под другом */
+        gap: 10px;
+    }
+    
+    #walletAddr {
+        width: 100%;
+        font-size: 13px;
+    }
+}
+
+/* На мобилках меняем направление с ряда на колонку */
+@media (max-width: 768px) {
+    .dashboard-wrapper {
+        flex-direction: column;
+    }
+}
+
+@keyframes pulse-tg {
+    0% { box-shadow: 0 0 0 0 rgba(36, 161, 222, 0.5); }
+    70% { box-shadow: 0 0 0 15px rgba(36, 161, 222, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(36, 161, 222, 0); }
+}
+
+/* --- АДАПТИВНОСТЬ --- */
+@media (max-width: 992px) {
+    .content-grid { grid-template-columns: 1fr; }
+    .sidebar { width: 80px; }
+    .logo, .menu-item span:not(.icon) { display: none; }
+}
+
+/* Мобильная шапка (скрыта на ПК) */
+.mobile-nav {
+    display: none;
+    background: var(--bg-card);
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 1001;
+}
+
+.burger-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.burger-menu span {
+    width: 25px;
+    height: 3px;
+    background: var(--text-primary);
+    border-radius: 2px;
+}
+
+
+/* Планшетная и мобильная версия */
+/* --- NAVIGATION ADAPTIVITY --- */
+
+/* Background overlay when menu is open */
+.menu-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(3px);
+    z-index: 1001;
+}
+
+.menu-overlay.active {
+    display: block;
+}
+
+/* Tablet and Desktop (Default) */
+@media (min-width: 769px) {
+    .mobile-nav { display: none; }
+}
+
+/* --- NAVIGATION ADAPTIVITY --- */
+/* --- СТИЛИ ЗАТЕМНЕНИЯ --- */
+.menu-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(3px);
+    z-index: 1001; /* Находится под меню, но над основным контентом */
+}
+
+.menu-overlay.active {
+    display: block;
+}
+
+/* --- АДАПТИВНОСТЬ (max-width: 768px) --- */
+@media (max-width: 768px) {
+    .mobile-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: var(--bg-sidebar);
+        padding: 15px 20px;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar {
+        position: fixed;
+        left: -100%; /* Полностью скрыто за левым краем */
+        top: 0;
+        width: 280px;
+        height: 100vh;
+        background: #11111d; /* Плотный цвет фона */
+        z-index: 1002; /* Самый верхний слой */
+        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        flex-direction: column;
+        box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .sidebar.active {
+        left: 0; /* Плавно выезжает на экран */
+    }
+
+    /* Исправление сжатия таблиц на маленьких экранах */
+    .table-container, .sales-table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .sales-table {
+        min-width: 600px;
+    }
+}

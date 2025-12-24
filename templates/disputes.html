@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Диспуты | FlowPay{% endblock %}
+
+{% block content %}
+<div class="disputes-page">
+    <div class="disputes-header" style="margin-bottom: 30px;">
+        <div class="input-field" style="max-width: 250px;">
+            <label style="margin-bottom: 8px; display: block; color: var(--text-secondary);">Дата расчета</label>
+            <input type="date" value="2025-12-20" class="dispute-date" style="width: 100%; background: var(--bg-card); border: 1px solid var(--border); color: white; padding: 12px; border-radius: 10px; color-scheme: dark; font-family: inherit;">
+        </div>
+    </div>
+
+    <div class="info-message" style="margin-top: 40px; padding: 20px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px dashed var(--border);">
+        <p style="color: var(--text-secondary); font-size: 15px; text-align: center;">
+            За выбранный период времени информация не найдена.
+        </p>
+    </div>
+</div>
+
+<style>
+    /* Плавный фокус для поля даты */
+    .dispute-date:focus {
+        border-color: var(--accent) !important;
+        outline: none;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}FlowPay{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
+
+    <div class="mobile-nav">
+        <div class="logo">FlowPay</div>
+        <button class="burger-menu" id="mobileBurgerBtn" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+
+    <div class="dashboard-wrapper">
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">FlowPay</div>
+            <nav class="menu">
+                <a href="{{ url_for('dashboard') }}" class="menu-item {{ 'active' if request.endpoint == 'dashboard' else '' }}">Главная</a>
+                <a href="{{ url_for('wallets') }}" class="menu-item {{ 'active' if request.endpoint == 'wallets' else '' }}">Карты и кошельки</a>
+                <a href="{{ url_for('settings') }}" class="menu-item {{ 'active' if request.endpoint == 'settings' else '' }}">Настройки</a>
+                <a href="{{ url_for('sales') }}" class="menu-item {{ 'active' if request.endpoint == 'sales' else '' }}">Продажи</a>
+                <a href="{{ url_for('buy') }}" class="menu-item {{ 'active' if request.endpoint == 'buy' else '' }}">Купля</a>
+                <a href="{{ url_for('balance') }}" class="menu-item {{ 'active' if request.endpoint == 'balance' else '' }}">Баланс</a>
+                <a href="{{ url_for('history') }}" class="menu-item {{ 'active' if request.endpoint == 'history' else '' }}">История переписки</a>
+                <a href="{{ url_for('disputes') }}" class="menu-item {{ 'active' if request.endpoint == 'disputes' else '' }}">Диспуты</a>
+                <a href="{{ url_for('logout') }}" class="menu-item logout-link">Выйти</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-spacer"></div> 
+
+                <div class="header-info">
+                    <div class="user-badge">
+                        Баланс: <strong>{{ "%.2f"|format(user.balance_usdt or 0) }} USDT</strong>
+                    </div>
+                    <span class="user-email">{{ user.email }}</span>
+                </div>
+            </header>
+
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    <script>
+        /**
+         * Функция управления боковым меню
+         */
+        function toggleMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('menuOverlay');
+            
+            // Переключаем активные классы
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+            
+            // Блокируем или разрешаем скролл страницы
+            if (sidebar.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Автоматическое закрытие меню при клике на ссылку (для мобильных)
+        document.querySelectorAll('.menu-item').forEach(link => {
+            link.addEventListener('click', () => {
+                const sidebar = document.getElementById('sidebar');
+                if (sidebar.classList.contains('active')) {
+                    toggleMenu();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

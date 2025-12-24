@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}Баланс | FlowPay{% endblock %}
+
+{% block content %}
+    <div class="balance-info-card">
+        <p style="color: var(--text-secondary);">Блокировки при: <span style="color: #fff; font-weight: bold;">500 USDT</span></p>
+        
+        <div style="margin: 20px 0;">
+            <p style="color: var(--text-secondary); margin-bottom: 8px;">Кошелек для пополнения:</p>
+            <div class="wallet-row" style="display: flex; gap: 10px; align-items: center;">
+                <input type="text" value="0x09E99EBCee0344FC2C8BE6D03760e4BDeE643C90" id="walletAddr" readonly 
+                       style="flex: 1; background: var(--bg-main); border: 1px solid var(--border); color: white; padding: 10px; border-radius: 8px;">
+                <button class="copy-btn" onclick="copyAddress()" 
+                        style="background: var(--accent); color: black; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold;">Копировать</button>
+            </div>
+            <p style="color: var(--accent); margin-top: 10px; font-size: 13px;">Сеть BSC 20</p>
+        </div>
+
+        <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 25px; max-width: 800px; line-height: 1.6;">
+            После пополнения кошелька нажмите кнопку «Создать заявку на депозит». В заявке укажите сумму депозита в USDT (Минимум 500 USDT). Сохраните заявку. Дождитесь подтверждения от администратора, после чего сумма будет зачислена на ваш баланс. <br><br>
+            <b>Для получения адреса другой сети — обращайтесь к администратору</b>                
+        </p>
+
+        <button class="btn-deposit" onclick="openDepositModal()">+ СОЗДАТЬ ЗАПРОС НА ПОПОЛНЕНИЕ</button>
+    </div>
+
+    <div class="sales-table-container" style="margin-top: 30px;">
+        <table class="sales-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Дата</th>
+                    <th>Валюта</th>
+                    <th>Кошелек</th>
+                    <th>Сумма</th>
+                    <th>Комиссия</th>
+                    <th>Статус</th>
+                </tr>
+            </thead>
+            <tbody id="historyTable">
+                {% for item in history %}
+                <tr>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.date }}</td>
+                    <td>USDT</td>
+                    <td title="{{ item.wallet }}">{{ item.wallet[:12] if item.wallet else '0x09E99EBC...' }}...</td>
+                    <td>{{ "%.2f"|format(item.amount) }}</td>
+                    <td>0</td>
+                    <td style="color: #ffc107;">{{ item.status }}</td>
+                </tr>
+                {% else %}
+                <tr id="noDataRow">
+                    <td colspan="7" style="text-align: center; padding: 40px; opacity: 0.5;">История пополнений пуста</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div id="depositModal" class="modal">
+        <div class="modal-content">
+            <h3>Депозит USDT</h3>
+            <p style="color: var(--text-secondary); font-size: 13px; margin-bottom: 20px;">Введите сумму (минимум 500.00)</p>
+            
+            <form action="{{ url_for('balance') }}" method="POST" id="depositForm">
+                <div class="input-field">
+                    <input type="number" name="amount" id="depositAmount" placeholder="0.00" min="500" step="0.01" required 
+                           style="background: var(--bg-main); color: white; border: 1px solid var(--border); width: 100%; padding: 12px; border-radius: 10px;">
+                    <p id="errorMsg" style="color: #ff4d4f; font-size: 12px; margin-top: 8px; display: none;">Минимум 500 USDT</p>
+                </div>
+
+                <div class="modal-buttons" style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="button" class="btn-confirm" onclick="validateAndSubmit()" style="flex: 1; background: #28a745; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">ПОДТВЕРДИТЬ</button>
+                    <button type="button" class="btn-cancel" onclick="closeModal()" style="flex: 1; background: rgba(255,255,255,0.05); color: white; border: 1px solid var(--border); padding: 12px; border-radius: 8px; cursor: pointer;">ОТМЕНИТЬ</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openDepositModal() { document.getElementById("depositModal").style.display = "flex"; }
+        function closeModal() { document.getElementById("depositModal").style.display = "none"; }
+        
+        function validateAndSubmit() {
+            const amountInput = document.getElementById("depositAmount");
+            const amount = parseFloat(amountInput.value);
+            if (isNaN(amount) || amount < 500) {
+                document.getElementById("errorMsg").style.display = "block";
+                amountInput.style.borderColor = "#ff4d4f";
+            } else {
+                document.getElementById("depositForm").submit();
+            }
+        }
+
+        function copyAddress() {
+            const copyText = document.getElementById("walletAddr");
+            copyText.select();
+            navigator.clipboard.writeText(copyText.value);
+            const btn = document.querySelector('.copy-btn');
+            btn.innerText = "Скопировано!";
+            setTimeout(() => { btn.innerText = "Копировать"; }, 2000);
+        }
+    </script>
+{% endblock %}
