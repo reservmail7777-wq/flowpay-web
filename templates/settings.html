@@ -16,7 +16,7 @@
                 <div class="input-field">
                     <label style="display: block; margin-bottom: 8px; color: var(--text-secondary); font-size: 14px;">Входящие (PayIn)</label>
                     <select name="base_currency_in" style="width: 100%; background: var(--bg-main); color: white; border: 1px solid var(--border); padding: 12px; border-radius: 10px; cursor: pointer; outline: none;">
-                        {% for curr in ['UAH', 'RUB', 'KGS', 'TJS', 'KZT', 'AED'] %}
+                        {% for curr in ['UAH', 'RUB', 'KGS', 'TJS', 'KZT', 'AED', 'USD', 'EUR', 'USDT'] %}
                         <option value="{{ curr }}" {% if user.currency_in == curr %}selected{% endif %}>{{ curr }}</option>
                         {% endfor %}
                     </select>
@@ -24,7 +24,7 @@
                 <div class="input-field">
                     <label style="display: block; margin-bottom: 8px; color: var(--text-secondary); font-size: 14px;">Исходящие (PayOut)</label>
                     <select name="base_currency_out" style="width: 100%; background: var(--bg-main); color: white; border: 1px solid var(--border); padding: 12px; border-radius: 10px; cursor: pointer; outline: none;">
-                        {% for curr in ['UAH', 'RUB', 'KGS', 'TJS', 'KZT', 'AED'] %}
+                        {% for curr in ['UAH', 'RUB', 'KGS', 'TJS', 'KZT', 'AED', 'USD', 'EUR', 'USDT'] %}
                         <option value="{{ curr }}" {% if user.currency_out == curr %}selected{% endif %}>{{ curr }}</option>
                         {% endfor %}
                     </select>
@@ -36,12 +36,12 @@
             <h3 style="margin-bottom: 20px; font-size: 18px;">Комиссии (Просмотр)</h3>
             <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                 <div class="input-field">
-                    <label style="display: block; margin-bottom: 8px; color: var(--text-secondary); font-size: 14px;">Входящий фиат</label>
+                    <label style="display: block; margin-bottom: 8px; color: var(--text-secondary); font-size: 14px;">Входящий ({{ user.currency_in }})</label>
                     <input type="text" value="{{ commissions.in if commissions else '0%' }}" readonly 
                            style="width: 100%; background: var(--bg-main); color: var(--text-secondary); border: 1px solid var(--border); padding: 12px; border-radius: 10px; opacity: 0.6; cursor: not-allowed;">
                 </div>
                 <div class="input-field">
-                    <label style="display: block; margin-bottom: 8px; color: var(--text-secondary); font-size: 14px;">Исходящий фиат</label>
+                    <label style="display: block; margin-bottom: 8px; color: var(--text-secondary); font-size: 14px;">Исходящий ({{ user.currency_out }})</label>
                     <input type="text" value="{{ commissions.out if commissions else '0%' }}" readonly 
                            style="width: 100%; background: var(--bg-main); color: var(--text-secondary); border: 1px solid var(--border); padding: 12px; border-radius: 10px; opacity: 0.6; cursor: not-allowed;">
                 </div>
@@ -53,20 +53,4 @@
         </button>
     </form>
 </div>
-
-<style>
-    /* Адаптивность для мобильных устройств */
-    @media (max-width: 600px) {
-        .form-grid {
-            grid-template-columns: 1fr !important;
-        }
-        .btn-save {
-            width: 100% !important;
-        }
-    }
-    .btn-save:hover {
-        opacity: 0.9;
-        transform: translateY(-1px);
-    }
-</style>
 {% endblock %}

@@ -47,54 +47,76 @@ def admin_create_user():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
-        # Получаем выбранные валюты из формы
         c_in = request.form.get('currency_in', 'UAH')
         c_out = request.form.get('currency_out', 'UAH')
+        
+        # Получаем балансы из формы (если пусто — будет 0)
+        b_usdt = float(request.form.get('balance_usdt') or 0.0)
+        b_fiat = float(request.form.get('balance_fiat') or 0.0)
 
         if User.query.filter_by(email=email).first():
             message = "Ошибка: Пользователь с такой почтой уже существует!"
         else:
-            # Создаем пользователя с предустановленными валютами
+            # Создаем пользователя со всеми настройками
             new_user = User(
                 email=email, 
                 password=password, 
                 currency_in=c_in, 
-                currency_out=c_out
+                currency_out=c_out,
+                balance_usdt=b_usdt,
+                balance_uah=b_fiat  # В базе поле называется balance_uah, но хранит выбранный фиат
             )
             db.session.add(new_user)
             db.session.commit()
-            message = f"Успех! Пользователь {email} создан с валютами {c_in}/{c_out}."
+            message = f"Успех! Пользователь {email} создан ({c_out}). Баланс: {b_usdt} USDT / {b_fiat} {c_out}"
     
-    return f'''
-        <div style="max-width: 400px; margin: 50px auto; font-family: sans-serif; border: 1px solid #ccc; padding: 20px; border-radius: 10px;">
-            <h2>Добавить пользователя</h2>
-            {f'<p style="color: green;">{message}</p>' if message else ''}
-            <form method="post">
-                <label>Email (Логин):</label>
-                <input type="email" name="email" required style="width:100%; padding:10px; margin-bottom:15px;"><br>
-                
-                <label>Пароль:</label>
-                <input type="text" name="password" required style="width:100%; padding:10px; margin-bottom:15px;"><br>
-                
-                <label>Валюта (Вход):</label>
-                <select name="currency_in" style="width:100%; padding:10px; margin-bottom:15px;">
-                    <option value="UAH">UAH (Гривна)</option>
-                    <option value="USD">USD (Доллар)</option>
-                    <option value="EUR">EUR (Евро)</option>
-                    <option value="USDT">USDT</option>
-                </select><br>
+    # Список валют для удобства
+    currencies = ['UAH', 'RUB', 'KGS', 'TJS', 'KZT', 'AED', 'USD', 'EUR']
+    
+    options = "".join([f'<option value="{c}">{c}</option>' for c in currencies])
 
-                <label>Валюта (Выход):</label>
-                <select name="currency_out" style="width:100%; padding:10px; margin-bottom:15px;">
-                    <option value="UAH">UAH (Гривна)</option>
-                    <option value="USD">USD (Доллар)</option>
-                    <option value="EUR">EUR (Евро)</option>
-                    <option value="USDT">USDT</option>
-                </select><br>
+    return f'''
+        <div style="max-width: 450px; margin: 40px auto; font-family: sans-serif; border: 1px solid #ddd; padding: 25px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+            <h2 style="text-align: center; margin-top: 0;">Добавить пользователя</h2>
+            {f'<p style="color: white; background: #28a745; padding: 10px; border-radius: 5px; text-align: center;">{message}</p>' if message else ''}
+            
+            <form method="post">
+                <label style="display:block; margin-bottom: 5px;">Email (Логин):</label>
+                <input type="email" name="email" required style="width:100%; padding:10px; margin-bottom:15px; border: 1px solid #ccc; border-radius: 5px;">
                 
-                <button type="submit" style="width:100%; padding:12px; cursor:pointer; background: #28a745; color: white; border: none; border-radius: 5px;">Создать аккаунт</button>
+                <label style="display:block; margin-bottom: 5px;">Пароль:</label>
+                <input type="text" name="password" required style="width:100%; padding:10px; margin-bottom:15px; border: 1px solid #ccc; border-radius: 5px;">
+
+                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                    <div style="flex: 1;">
+                        <label style="display:block; margin-bottom: 5px;">Баланс USDT:</label>
+                        <input type="number" step="0.01" name="balance_usdt" placeholder="0.00" style="width:100%; padding:10px; border: 1px solid #ccc; border-radius: 5px;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="display:block; margin-bottom: 5px;">Баланс Фиат:</label>
+                        <input type="number" step="0.01" name="balance_fiat" placeholder="0.00" style="width:100%; padding:10px; border: 1px solid #ccc; border-radius: 5px;">
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                    <div style="flex: 1;">
+                        <label style="display:block; margin-bottom: 5px;">Валюта Входа:</label>
+                        <select name="currency_in" style="width:100%; padding:10px; border: 1px solid #ccc; border-radius: 5px;">
+                            {options}
+                            <option value="USDT">USDT</option>
+                        </select>
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="display:block; margin-bottom: 5px;">Валюта Выхода:</label>
+                        <select name="currency_out" style="width:100%; padding:10px; border: 1px solid #ccc; border-radius: 5px;">
+                            {options}
+                        </select>
+                    </div>
+                </div>
+                
+                <button type="submit" style="width:100%; padding:12px; cursor:pointer; background: #007bff; color: white; border: none; border-radius: 5px; font-weight: bold;">СОЗДАТЬ ПОЛЬЗОВАТЕЛЯ</button>
             </form>
-            <br><a href="/">На главную</a>
+            <br><a href="/" style="display: block; text-align: center; color: #666; text-decoration: none;">← На главную</a>
         </div>
     '''
 

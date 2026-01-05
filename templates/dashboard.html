@@ -39,9 +39,9 @@
             <h3>Текущий баланс</h3>
             <div class="main-value">{{ "%.2f"|format(user.balance_usdt) }} USDT</div>
             <div class="sub-stats">
-                <p>Прибыль за сегодня: <strong>{{ "%.2f"|format(user.balance_uah or 0) }} UAH</strong></p>
-                <p>PayIn: 0,00 UAH / PayOut: 0,00 UAH</p>
-                <p>Прибыль за 30 дней: <strong>0,00 UAH</strong></p>
+                <p>Прибыль за сегодня: <strong>{{ "%.2f"|format(user.balance_uah or 0) }} {{ user.currency_out }}</strong></p>
+                <p>PayIn: 0,00 {{ user.currency_out }} / PayOut: 0,00 {{ user.currency_out }}</p>
+                <p>Прибыль за 30 дней: <strong>0,00 {{ user.currency_out }}</strong></p>
             </div>
         </div>
 
