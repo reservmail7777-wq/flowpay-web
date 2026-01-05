@@ -40,31 +40,59 @@ class DepositRequest(db.Model):
 with app.app_context():
     db.create_all()
 
-# --- СЕКРЕТНЫЙ МАРШРУТ ДЛЯ ДОБАВЛЕНИЯ ПОЛЬЗОВАТЕЛЕЙ ---
+# --- СИККРЕТ МАРШРУТ ДЛЯ ДОБАВЛЕНИЯ ПОЛЬЗОВАТЕЛЕЙ ---
 @app.route('/admin-create-user', methods=['GET', 'POST'])
 def admin_create_user():
     message = None
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
-        username = request.form.get('username') # В модели User нет username, но можно использовать для логов
+        # Получаем выбранные валюты из формы
+        c_in = request.form.get('currency_in', 'UAH')
+        c_out = request.form.get('currency_out', 'UAH')
 
         if User.query.filter_by(email=email).first():
             message = "Ошибка: Пользователь с такой почтой уже существует!"
         else:
-            new_user = User(email=email, password=password)
+            # Создаем пользователя с предустановленными валютами
+            new_user = User(
+                email=email, 
+                password=password, 
+                currency_in=c_in, 
+                currency_out=c_out
+            )
             db.session.add(new_user)
             db.session.commit()
-            message = f"Успех! Пользователь {email} создан. Можете передать ему пароль."
+            message = f"Успех! Пользователь {email} создан с валютами {c_in}/{c_out}."
     
     return f'''
-        <div style="max-width: 400px; margin: 50px auto; font-family: sans-serif;">
+        <div style="max-width: 400px; margin: 50px auto; font-family: sans-serif; border: 1px solid #ccc; padding: 20px; border-radius: 10px;">
             <h2>Добавить пользователя</h2>
             {f'<p style="color: green;">{message}</p>' if message else ''}
             <form method="post">
-                <input type="email" name="email" placeholder="Email (Логин)" required style="width:100%; padding:10px; margin-bottom:10px;"><br>
-                <input type="text" name="password" placeholder="Пароль" required style="width:100%; padding:10px; margin-bottom:10px;"><br>
-                <button type="submit" style="width:100%; padding:10px; cursor:pointer;">Создать аккаунт</button>
+                <label>Email (Логин):</label>
+                <input type="email" name="email" required style="width:100%; padding:10px; margin-bottom:15px;"><br>
+                
+                <label>Пароль:</label>
+                <input type="text" name="password" required style="width:100%; padding:10px; margin-bottom:15px;"><br>
+                
+                <label>Валюта (Вход):</label>
+                <select name="currency_in" style="width:100%; padding:10px; margin-bottom:15px;">
+                    <option value="UAH">UAH (Гривна)</option>
+                    <option value="USD">USD (Доллар)</option>
+                    <option value="EUR">EUR (Евро)</option>
+                    <option value="USDT">USDT</option>
+                </select><br>
+
+                <label>Валюта (Выход):</label>
+                <select name="currency_out" style="width:100%; padding:10px; margin-bottom:15px;">
+                    <option value="UAH">UAH (Гривна)</option>
+                    <option value="USD">USD (Доллар)</option>
+                    <option value="EUR">EUR (Евро)</option>
+                    <option value="USDT">USDT</option>
+                </select><br>
+                
+                <button type="submit" style="width:100%; padding:12px; cursor:pointer; background: #28a745; color: white; border: none; border-radius: 5px;">Создать аккаунт</button>
             </form>
             <br><a href="/">На главную</a>
         </div>
