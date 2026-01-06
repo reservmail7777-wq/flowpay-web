@@ -154,6 +154,20 @@ def logout():
     session.clear()
     return redirect(url_for('login'))
 
+@app.route('/wallets')
+def wallets():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    user = db.session.get(User, session['user_id'])
+    return render_template('wallets.html', user=user)
+
+@app.route('/history')
+def history():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    user = db.session.get(User, session['user_id'])
+    return render_template('history.html', user=user)
+
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
