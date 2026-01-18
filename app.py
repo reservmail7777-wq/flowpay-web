@@ -41,7 +41,6 @@ class DepositRequest(db.Model):
 with app.app_context():
     db.create_all()
     try:
-        # Добавляем колонки, если их нет (исправляет ошибку из вашего лога)
         db.session.execute(text('ALTER TABLE "user" ADD COLUMN IF NOT EXISTS commission_in VARCHAR(20) DEFAULT \'5.7%\''))
         db.session.execute(text('ALTER TABLE "user" ADD COLUMN IF NOT EXISTS commission_out VARCHAR(20) DEFAULT \'2.0%\''))
         db.session.commit()
@@ -136,6 +135,54 @@ def balance():
     history_list = DepositRequest.query.filter_by(user_id=user.id).order_by(DepositRequest.id.desc()).all()
     return render_template('balance.html', user=user, history=history_list)
 
+# --- АДМИН-ПАНЕЛЬ: СПИСОК И УДАЛЕНИЕ ---
+@app.route('/admin-users')
+def admin_list_users():
+    users = User.query.all()
+    rows = ""
+    for u in users:
+        rows += f'''
+        <tr>
+            <td style="padding:12px; border-bottom:1px solid #eee;">{u.id}</td>
+            <td style="padding:12px; border-bottom:1px solid #eee;"><b>{u.email}</b></td>
+            <td style="padding:12px; border-bottom:1px solid #eee;">{u.balance_usdt} USDT / {u.balance_uah} Fiat</td>
+            <td style="padding:12px; border-bottom:1px solid #eee;">
+                <a href="/admin/delete-user/{u.id}" 
+                   onclick="return confirm('Вы уверены, что хотите удалить {u.email}?')" 
+                   style="color: #d9534f; text-decoration: none; font-weight: bold;">Удалить</a>
+            </td>
+        </tr>
+        '''
+    return f'''
+        <div style="max-width: 900px; margin: 50px auto; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2>Управление пользователями</h2>
+                <a href="/admin-create-user" style="background: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">+ Создать пользователя</a>
+            </div>
+            <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                <thead style="background: #f8f9fa;">
+                    <tr>
+                        <th style="padding:15px; text-align: left;">ID</th>
+                        <th style="padding:15px; text-align: left;">Email</th>
+                        <th style="padding:15px; text-align: left;">Балансы</th>
+                        <th style="padding:15px; text-align: left;">Действие</th>
+                    </tr>
+                </thead>
+                <tbody>{rows}</tbody>
+            </table>
+            <p style="margin-top: 20px;"><a href="/" style="color: #666;">← На главную</a></p>
+        </div>
+    '''
+
+@app.route('/admin/delete-user/<int:user_id>')
+def delete_user(user_id):
+    user_to_delete = db.session.get(User, user_id)
+    if user_to_delete:
+        DepositRequest.query.filter_by(user_id=user_id).delete()
+        db.session.delete(user_to_delete)
+        db.session.commit()
+    return redirect(url_for('admin_list_users'))
+
 @app.route('/admin-create-user', methods=['GET', 'POST'])
 def admin_create_user():
     message = None
@@ -155,28 +202,31 @@ def admin_create_user():
             )
             db.session.add(new_user)
             db.session.commit()
-            message = f"Успех! Пользователь {email} создан."
+            return redirect(url_for('admin_list_users'))
     
     currencies = ['UAH', 'RUB', 'KGS', 'TJS', 'KZT', 'AED', 'USD', 'EUR']
     options = "".join([f'<option value="{c}">{c}</option>' for c in currencies])
     return f'''
-        <div style="max-width: 500px; margin: 40px auto; font-family: sans-serif; border: 1px solid #ddd; padding: 25px; border-radius: 12px; background: #fdfdfd;">
-            <h2 style="text-align:center;">Регистрация</h2>{f'<p style="color:green;text-align:center;">{message}</p>' if message else ''}
+        <div style="max-width: 500px; margin: 40px auto; font-family: sans-serif; border: 1px solid #ddd; padding: 25px; border-radius: 12px; background: #fdfdfd; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+            <h2 style="text-align:center;">Регистрация</h2>{f'<p style="color:red;text-align:center;">{message}</p>' if message else ''}
             <form method="post">
-                Email: <input type="email" name="email" required style="width:100%;margin-bottom:10px;">
-                Pass: <input type="text" name="password" required style="width:100%;margin-bottom:10px;">
-                <div style="display:flex;gap:10px;">
-                    <input type="text" name="comm_in" placeholder="In % (5.7%)" style="flex:1;">
-                    <input type="text" name="comm_out" placeholder="Out % (2.0%)" style="flex:1;">
-                </div><br>
-                <div style="display:flex;gap:10px;">
-                    <input type="number" step="0.01" name="balance_usdt" placeholder="USDT" style="flex:1;">
-                    <input type="number" step="0.01" name="balance_fiat" placeholder="Fiat" style="flex:1;">
-                </div><br>
-                <select name="currency_in">{options}<option value="USDT">USDT</option></select>
-                <select name="currency_out">{options}</select><br><br>
-                <button type="submit" style="width:100%;padding:10px;background:#007bff;color:white;border:none;">СОЗДАТЬ</button>
+                Email: <input type="email" name="email" required style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc; border-radius:5px;">
+                Pass: <input type="text" name="password" required style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc; border-radius:5px;">
+                <div style="display:flex; gap:10px; margin-bottom:15px;">
+                    <input type="text" name="comm_in" placeholder="In % (5.7%)" style="flex:1; padding:10px;">
+                    <input type="text" name="comm_out" placeholder="Out % (2.0%)" style="flex:1; padding:10px;">
+                </div>
+                <div style="display:flex; gap:10px; margin-bottom:15px;">
+                    <input type="number" step="0.01" name="balance_usdt" placeholder="USDT" style="flex:1; padding:10px;">
+                    <input type="number" step="0.01" name="balance_fiat" placeholder="Fiat" style="flex:1; padding:10px;">
+                </div>
+                <div style="display:flex; gap:10px; margin-bottom:20px;">
+                    <select name="currency_in" style="flex:1; padding:10px;">{options}<option value="USDT">USDT</option></select>
+                    <select name="currency_out" style="flex:1; padding:10px;">{options}</select>
+                </div>
+                <button type="submit" style="width:100%; padding:12px; background:#007bff; color:white; border:none; border-radius:5px; font-weight:bold; cursor:pointer;">СОЗДАТЬ И ВЕРНУТЬСЯ</button>
             </form>
+            <p style="text-align:center; margin-top:15px;"><a href="/admin-users" style="color:#666; text-decoration:none;">← К списку пользователей</a></p>
         </div>
     '''
 
